@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
 namespace MVC5Course.Models
 {
-    public class ProductViewModel
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    [MetadataType(typeof(ProductMetaData))]
+    public partial class Product
     {
+    }
+
+    public partial class ProductMetaData
+    {
+        [Required]
         [Display(Name = "商品編號")]
         public int ProductId { get; set; }
 
         [Required]
         [Display(Name = "商品名稱")]
-        [StringLength(10, ErrorMessage = "商品名稱不得大於 10 個字")]
+        [StringLength(80, ErrorMessage = "欄位長度不得大於 80 個字元")]
         public string ProductName { get; set; }
 
         [Required]
@@ -23,7 +27,13 @@ namespace MVC5Course.Models
         public Nullable<decimal> Price { get; set; }
 
         [Required]
+        [Display(Name = "是否有效")]
+        public Nullable<bool> Active { get; set; }
+
+        [Required]
         [Display(Name = "庫存")]
         public Nullable<decimal> Stock { get; set; }
+
+        public virtual ICollection<OrderLine> OrderLine { get; set; }
     }
 }
