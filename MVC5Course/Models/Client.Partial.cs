@@ -5,8 +5,16 @@ namespace MVC5Course.Models
     using System.ComponentModel.DataAnnotations;
 
     [MetadataType(typeof(ClientMetaData))]
-    public partial class Client
+    public partial class Client : IValidatableObject
     {
+        // 實作模型驗證
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (this.DateOfBirth.Value.Year > 1980 && this.City == "Taipei")
+            {
+                yield return new ValidationResult("條件錯誤", new string[] { "DateOfBirth", "City" });
+            }
+        }
     }
 
     public partial class ClientMetaData
