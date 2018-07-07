@@ -99,6 +99,28 @@ namespace MVC5Course.Controllers
             return RedirectToAction("Index2");
         }
 
+        public ActionResult DeleteProduct(int id)
+        {
+            var data = db.Product.Find(id);
+            return View(data);
+        }
+
+        [HttpPost, ActionName("DeleteProduct")]
+        public ActionResult DeleteProductConfirmed(int id, ProductViewModel data)
+        {
+            var product = db.Product.Find(id);
+
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.Product.Remove(product);
+            db.SaveChanges();
+
+            return RedirectToAction("Index2");
+        }
+
         // GET: Products/Details/5
         public ActionResult Details(int? id)
         {
