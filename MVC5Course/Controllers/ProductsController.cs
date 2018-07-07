@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
+using Omu.ValueInjecter;
 
 namespace MVC5Course.Controllers
 {
@@ -87,9 +88,11 @@ namespace MVC5Course.Controllers
             }
 
             var product = db.Product.Find(id);
-            product.ProductName = data.ProductName;
-            product.Price = data.Price;
-            product.Stock = data.Stock;
+            //product.ProductName = data.ProductName;
+            //product.Price = data.Price;
+            //product.Stock = data.Stock;
+
+            product.InjectFrom(data);
 
             db.SaveChanges();
 
