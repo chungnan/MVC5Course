@@ -11,6 +11,12 @@ namespace MVC5Course.Models
         // 實作模型驗證
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            // 通常此判斷為當資料為新增時需要判斷的模型驗證
+            if (this.ClientId == 0)
+            {
+                // 實作模型驗證
+            }
+
             if (this.Longitude.HasValue != this.Latitude.HasValue)
             {
                 yield return new ValidationResult("經緯度欄位必須一起設定", new string[] { "Longitude", "Latitude" });
