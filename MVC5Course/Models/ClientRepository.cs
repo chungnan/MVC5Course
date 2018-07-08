@@ -8,14 +8,13 @@ namespace MVC5Course.Models
     {
         public IQueryable<Client> All(bool isAll = false)
         {
-            var data = base.All();
 
-            if (!isAll)
+            if (isAll)
             {
-                data = base.All().Where(p => p.CreditRating < 2 && p.Active == false);
+                return base.All();
             }
 
-            return data;
+            return base.All().Where(p => p.CreditRating < 2 && p.Active == true);
         }
 
         public IQueryable<Client> SearchKeyword(string keyword)
