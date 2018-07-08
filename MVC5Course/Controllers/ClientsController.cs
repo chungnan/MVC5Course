@@ -21,6 +21,21 @@ namespace MVC5Course.Controllers
             return View(client.OrderByDescending(o => o.ClientId).Take(10));
         }
 
+        public ActionResult Search(string keyword)
+        {
+            var client = db.Client.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                client = client.Where(w => w.FirstName.Contains(keyword)).Take(10);
+            }
+
+            //return View(client);
+
+            // 指定由哪個 View 顯示查詢結果
+            return View("Index", client);
+        }
+
         // GET: Clients/Details/5
         public ActionResult Details(int? id)
         {

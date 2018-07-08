@@ -1,21 +1,14 @@
 ﻿@model IEnumerable<MVC5Course.Models.Client>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
 }
 
-<h2>Index</h2>
+<h2>Search</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-@using (Html.BeginForm("Search", "Clients", FormMethod.Get, null))
-{
-    @Html.TextBox("keyword", null, new { placeholder = "請輸入關鍵字"})
-    <input type="submit" />
-}
-
 <table class="table">
     <tr>
         <th>
