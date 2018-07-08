@@ -14,31 +14,19 @@ namespace MVC5Course.Controllers
     public class ProductsController : Controller
     {
         private FabricsEntities db = new FabricsEntities();
+        ProductRepository prodRepo = RepositoryHelper.GetProductRepository();
 
         // GET: Products
         public ActionResult Index()
         {
-            var data = db.Product
-                .OrderByDescending(p => p.ProductId)
-                .Take(10)
-                .ToList();
+            var data = prodRepo.TakeData(10);
 
             return View(data);
         }
 
         public ActionResult Index2()
         {
-            var data = db.Product
-                .Where(w => w.Active == true)
-                .OrderByDescending(o => o.ProductId)
-                .Take(10)
-                .Select(s => new ProductViewModel()
-                {
-                    ProductId = s.ProductId,
-                    ProductName = s.ProductName,
-                    Price = s.Price,
-                    Stock = s.Stock
-                });
+            IQueryable<ProductViewModel> data = prodRepo.ProductViewModel();
 
             return View(data);
         }
@@ -67,15 +55,15 @@ namespace MVC5Course.Controllers
                 Stock = data.Stock
             };
 
-            db.Product.Add(product);
-            db.SaveChanges();
+            prodRepo.Add(product);
+            prodRepo.UnitOfWork.Commit();
 
             return RedirectToAction("Index2");
         }
 
         public ActionResult EditProduct(int id)
         {
-            var data = db.Product.Find(id);
+            var data = prodRepo.Find(id);
             return View(data);
         }
 
@@ -87,36 +75,36 @@ namespace MVC5Course.Controllers
                 return View(data);
             }
 
-            var product = db.Product.Find(id);
+            var product = prodRepo.Find(id);
             //product.ProductName = data.ProductName;
             //product.Price = data.Price;
             //product.Stock = data.Stock;
 
             product.InjectFrom(data);
 
-            db.SaveChanges();
+            prodRepo.UnitOfWork.Commit();
 
             return RedirectToAction("Index2");
         }
 
         public ActionResult DeleteProduct(int id)
         {
-            var data = db.Product.Find(id);
+            var data = prodRepo.Find(id);
             return View(data);
         }
 
         [HttpPost, ActionName("DeleteProduct")]
         public ActionResult DeleteProductConfirmed(int id)
         {
-            var product = db.Product.Find(id);
+            var product = prodRepo.Find(id);
 
             if (product == null)
             {
                 return HttpNotFound();
             }
 
-            db.Product.Remove(product);
-            db.SaveChanges();
+            prodRepo.Delete(product);
+            prodRepo.UnitOfWork.Commit();
 
             return RedirectToAction("Index2");
         }
@@ -128,7 +116,7 @@ namespace MVC5Course.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Product.Find(id);
+            Product product = prodRepo.Find(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -151,8 +139,8 @@ namespace MVC5Course.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Product.Add(product);
-                db.SaveChanges();
+                prodRepo.Add(product);
+                prodRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
@@ -166,7 +154,7 @@ namespace MVC5Course.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Product.Find(id);
+            Product product = prodRepo.Find(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -183,6 +171,7 @@ namespace MVC5Course.Controllers
         {
             if (ModelState.IsValid)
             {
+                var db = prodRepo.UnitOfWork.Context;
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -197,7 +186,7 @@ namespace MVC5Course.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Product.Find(id);
+            Product product = prodRepo.Find(id.Value);
             if (product == null)
             {
                 return HttpNotFound();
@@ -210,9 +199,9 @@ namespace MVC5Course.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Product.Find(id);
-            db.Product.Remove(product);
-            db.SaveChanges();
+            Product product = prodRepo.Find(id);
+            prodRepo.Delete(product);
+            prodRepo.UnitOfWork.Commit();
             return RedirectToAction("Index");
         }
 
@@ -220,7 +209,7 @@ namespace MVC5Course.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                prodRepo.UnitOfWork.Context.Dispose();
             }
             base.Dispose(disposing);
         }
