@@ -12,8 +12,14 @@ namespace MVC5Course.Controllers
 {
     public class ClientsController : Controller
     {
-        ClientRepository clientRepo = RepositoryHelper.GetClientRepository();
-        OccupationRepository occuRepo = RepositoryHelper.GetOccupationRepository();
+        ClientRepository clientRepo;
+        OccupationRepository occuRepo;
+
+        public ClientsController()
+        {
+            clientRepo = RepositoryHelper.GetClientRepository();
+            occuRepo = RepositoryHelper.GetOccupationRepository(clientRepo.UnitOfWork);
+        }
 
         // GET: Clients
         public ActionResult Index()
