@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,10 +25,19 @@ namespace MVC5Course.Controllers
             return View((object)model);
         }
 
+        // Partial Result
         public ActionResult PartialViewTest()
         {
             string model = "PartialView";
             return PartialView("ViewTest", (object)model);
+        }
+
+        // Content Result 建議不要使用
+        public ActionResult ContentTest()
+        {
+            return Content("Test Content!",
+                "text/plain",
+                Encoding.GetEncoding("Big5"));
         }
     }
 }
