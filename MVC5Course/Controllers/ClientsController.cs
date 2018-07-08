@@ -57,6 +57,28 @@ namespace MVC5Course.Controllers
             return View(client);
         }
 
+        // 示範 CatchAll 方式
+        [Route("{*name}")]
+        public ActionResult Details2(string name)
+        {
+            string[] names = name.Split('/');
+            string FirstName = names[0];
+            string MiddleName = names[1];
+            string LastName = names[2];
+
+            var client = clientRepo.All()
+                .FirstOrDefault(w => w.FirstName == FirstName &&
+                                   w.MiddleName == MiddleName &&
+                                   w.LastName == LastName);
+
+            if (client == null)
+            {
+
+            }
+
+            return View("Details", client);
+        }
+
         // GET: Clients/Create
         [Route("create")]
         public ActionResult Create()
