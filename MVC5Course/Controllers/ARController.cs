@@ -39,5 +39,21 @@ namespace MVC5Course.Controllers
                 "text/plain",
                 Encoding.GetEncoding("Big5"));
         }
+
+        public ActionResult FileTest(string dl)
+        {
+            if (string.IsNullOrEmpty(dl))
+            {
+                // 當沒有 dl 值時顯示圖片
+                return File(Server.MapPath(@"~/App_Data/171022bf0j1em7yjtiof1h.gif"),
+                    "image/gif");
+            }
+            else
+            {
+                // 有 dl 值時下載圖片
+                return File(Server.MapPath(@"~/App_Data/171022bf0j1em7yjtiof1h.gif"),
+                    "image/gif", "dlFile.gif");
+            }
+        }
     }
 }
