@@ -6,7 +6,7 @@ namespace MVC5Course.Models
     using MVC5Course.Models.InputValidations;
 
     [MetadataType(typeof(ClientMetaData))]
-    public partial class Client : IValidatableObject
+    public partial class Client : IValidatableObject, IClientBatchUpdate
     {
         // 實作模型驗證
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
