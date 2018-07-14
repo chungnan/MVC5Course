@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC5Course.Controllers
 {
-    public class MBController : Controller
+    public class MBController : BaseController
     {
         // GET: MB
         public ActionResult Index()
@@ -27,6 +27,9 @@ namespace MVC5Course.Controllers
         public ActionResult ViewBagDemo()
         {
             ViewBag.Text = "這是 ViewBag Demo";
+
+            ViewData["Data"] = db.Client.Take(5).ToList();
+
             return View();
         }
 
