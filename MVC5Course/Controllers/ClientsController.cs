@@ -191,14 +191,18 @@ namespace MVC5Course.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
-        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes,IdNumber")] Client client)
+        public ActionResult Edit(int id, FormCollection form)
         {
-            if (ModelState.IsValid)
+            // 使用模型繫結延遲驗證 TryUpdateModel
+            Client client = clientRepo.Find(id);
+
+            // prefix: 前端欄位 name 屬性若使用 page.id 就可以設定此為 page
+            //      會去找 page 名稱下的欄位資料
+            // includeProperties: 放需要修改的欄位(就算欄位有被修改也會忽略)
+            // excludeProperties: 放不需要修改的欄位(就算該欄位有被修改也會忽略)
+            if (TryUpdateModel(client, "", null, excludeProperties: new string[] { "FirstName" }))
             {
-                // 這段 code 寫得很糟糕
-                var db = clientRepo.UnitOfWork.Context;
-                db.Entry(client).State = EntityState.Modified;
-                db.SaveChanges();
+                clientRepo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
