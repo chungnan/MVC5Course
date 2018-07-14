@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC5Course.Controllers
 {
-    public class MBController : BaseController
+    public partial class MBController : BaseController
     {
         // GET: MB
         public ActionResult Index()
@@ -55,6 +55,11 @@ namespace MVC5Course.Controllers
         public ActionResult TempDataDemo()
         {
             return View();
+        }
+
+        public ActionResult MBinding(string name)
+        {
+            return Content(name);
         }
     }
 }

@@ -148,7 +148,18 @@ namespace MVC5Course.Controllers
             var occuData = occuRepo.All();
             ViewBag.OccupationId = new SelectList(occuData, "OccupationId", "OccupationName", client.OccupationId);
 
-            return View(client);
+            // 清除 ModelState
+            /* 若清除 ModelState 後會以 Model 為資料 Binding 回 View
+                (此指下方再次從 EF 取得資料的 item) */
+            //ModelState.Clear();
+
+            // 移除 ModelState 單一欄位
+            /* 此處移除欄位後，會再與下方 item 取得的 Model 資料欄位合併，傳回給 View */
+            // ModelState.Remove("Latitude");
+
+            // 當 ModelState 資料與 Model 資料都存在時，會以 ModelState 為優先
+            var item = clientRepo.Find(client.ClientId);
+            return View(item);
         }
 
         // GET: Clients/Delete/5
