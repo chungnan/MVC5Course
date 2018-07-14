@@ -30,6 +30,38 @@ namespace MVC5Course.Controllers
             return View(client.OrderByDescending(o => o.ClientId).Take(10));
         }
 
+        // GET: BatchUpdate
+        [Route("BatchUpdate")]
+        public ActionResult BatchUpdate()
+        {
+            var client = clientRepo.All();
+            return View(client.OrderByDescending(o => o.ClientId).Take(10));
+        }
+
+        // 批次修改資料
+        [HttpPost]
+        [Route("BatchUpdate")]
+        public ActionResult BatchUpdate(ClientBatchViewModel[] data)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (var item in data)
+                {
+                    var client = clientRepo.Find(item.ClientId);
+                    client.FirstName = item.FirstName;
+                    client.MiddleName = item.MiddleName;
+                    client.LastName = item.LastName;
+                }
+                clientRepo.UnitOfWork.Commit();
+
+                return RedirectToAction("Index");
+            }
+
+            ViewData.Model = clientRepo.All().OrderByDescending(o => o.ClientId).Take(10);
+
+            return View("BatchUpdate");
+        }
+
         [Route("search")]
         public ActionResult Search(string keyword)
         {
