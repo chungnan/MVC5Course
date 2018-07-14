@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -52,7 +53,26 @@ namespace MVC5Course.Controllers
                     client.MiddleName = item.MiddleName;
                     client.LastName = item.LastName;
                 }
-                clientRepo.UnitOfWork.Commit();
+
+                // 示範如何取得 DbEntityValidationException 例外的驗證失敗資訊
+                try
+                {
+                    clientRepo.UnitOfWork.Commit();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    List<string> errors = new List<string>();
+
+                    foreach (var vError in ex.EntityValidationErrors)
+                    {
+                        foreach (var err in vError.ValidationErrors)
+                        {
+                            errors.Add($"{err.PropertyName}: {err.ErrorMessage}");
+                        }
+                    }
+
+                    return Content(String.Join(", ", errors.ToArray()));
+                }
 
                 return RedirectToAction("Index");
             }
