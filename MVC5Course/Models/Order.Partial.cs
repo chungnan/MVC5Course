@@ -7,6 +7,9 @@ namespace MVC5Course.Models
     [MetadataType(typeof(OrderMetaData))]
     public partial class Order
     {
+        partial void Init()
+        {
+        }
     }
 
     public partial class OrderMetaData

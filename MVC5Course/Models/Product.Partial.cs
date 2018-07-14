@@ -7,6 +7,9 @@ namespace MVC5Course.Models
     [MetadataType(typeof(ProductMetaData))]
     public partial class Product
     {
+        partial void Init()
+        {
+        }
     }
 
     public partial class ProductMetaData

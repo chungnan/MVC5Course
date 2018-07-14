@@ -29,6 +29,10 @@ namespace MVC5Course.Models
             //    yield return new ValidationResult("條件錯誤", new string[] { "DateOfBirth", "City" });
             //}
         }
+
+        partial void Init()
+        {
+        }
     }
 
     public partial class ClientMetaData

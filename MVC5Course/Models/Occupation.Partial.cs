@@ -7,6 +7,9 @@ namespace MVC5Course.Models
     [MetadataType(typeof(OccupationMetaData))]
     public partial class Occupation
     {
+        partial void Init()
+        {
+        }
     }
 
     public partial class OccupationMetaData

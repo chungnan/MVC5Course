@@ -126,6 +126,9 @@ foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollectio
 [MetadataType(typeof(<#=code.Escape(complex)#>MetaData))]
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>
 {
+    partial void Init()
+    {
+    }
 }
 
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>MetaData
