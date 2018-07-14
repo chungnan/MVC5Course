@@ -18,6 +18,9 @@
 <br />
 @using (Html.BeginForm("BatchUpdate", "Clients"))
 {
+    @Html.TextBox("page.keyword", "Will")
+    @Html.TextBox("page.PageNo", 10)
+
     <table class="table">
         <tr>
             <th>
@@ -46,7 +49,7 @@
             var data = Model.ToArray();
         }
 
-        @for(var i = 0; i < data.Length; i++)
+        @for (var i = 0; i < data.Length; i++)
         {
             @Html.HiddenFor(modelItem => data[i].ClientId)
             <tr>
