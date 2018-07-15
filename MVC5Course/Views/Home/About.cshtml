@@ -1,4 +1,6 @@
-﻿@{
+﻿@using MVC5Course.Helpers
+
+@{
     ViewBag.Title = "About";
 }
 <h2>@ViewBag.Title.</h2>
@@ -6,15 +8,49 @@
 
 <p>Use this area to provide additional information.</p>
 
-@Model
-@*取得路由指定的 id 參數*@
-@{ var routeValues = ViewContext.RouteData.Values; }
-@routeValues["id"].ToString()
-@HttpContext.Current.Items
+@functions {
+    public string GetRouteValue(string name)
+    {
+        return ViewContext.RouteData.Values[name]?.ToString();
+    }
+    public string GetModelStateValue(string name)
+    {
+        return ViewContext.ViewData.ModelState[name]?.Value.AttemptedValue;
+    }
+}
 
+@Model
+
+@*ModelState Values*@
+@*------------------------------------------------*@
 
 @*取得 ModelState 的路由資料*@
 @ViewData.ModelState["id"].Value.AttemptedValue
+
+@GetModelStateValue("id")
+
+@*Helpers/Utils.cs*@
+@this.GetModelStateValue2("id")
+
+@*Route Values*@
+@*------------------------------------------------*@
+
+@*取得路由指定的 id 參數*@
+@{ var routeValues = ViewContext.RouteData.Values; }
+@routeValues["id"].ToString()
+
+@GetRouteValue("action")
+
+@*Helpers/Utils.cs*@
+@this.GetRouteValue2("id")
+
+@*HttpContext.Current.Items*@
+@*------------------------------------------------*@
+
+@HttpContext.Current.Items
+
+@*ViewContext*@
+@*------------------------------------------------*@
 
 @ViewContext.ViewData.Model
 @ViewContext.ViewData.ModelState["id"].Value.AttemptedValue
