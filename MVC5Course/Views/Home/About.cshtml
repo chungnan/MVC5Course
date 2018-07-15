@@ -5,3 +5,18 @@
 <h3>@ViewBag.Message</h3>
 
 <p>Use this area to provide additional information.</p>
+
+@*取得路由指定的 id 參數*@
+@{
+    var routes = ViewContext.RouteData.Values;
+}
+
+@routes["id"]
+
+
+@*取得 ModelState 的路由資料*@
+@ViewData.ModelState["id"].Value.AttemptedValue
+
+
+@*HttpContext.Items 儲存短暫出現的資料*@
+@ViewContext.HttpContext.Items
