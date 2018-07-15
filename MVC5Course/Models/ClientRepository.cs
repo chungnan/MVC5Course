@@ -17,13 +17,18 @@ namespace MVC5Course.Models
             return base.All().Where(p => p.CreditRating < 2 && p.Active == true);
         }
 
-        public IQueryable<Client> SearchKeyword(string keyword)
+        public IQueryable<Client> SearchKeyword(string keyword, string CreditRating)
         {
             var data = this.All();
 
             if (!string.IsNullOrEmpty(keyword))
             {
                 data = data.Where(w => w.FirstName.Contains(keyword));
+            }
+
+            if (!string.IsNullOrEmpty(CreditRating))
+            {
+                data = data.Where(w => w.CreditRating.ToString() == CreditRating);
             }
 
             return data;

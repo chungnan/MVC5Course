@@ -28,6 +28,19 @@ namespace MVC5Course.Controllers
         public ActionResult Index()
         {
             var client = clientRepo.All();
+
+            var creditRating = clientRepo.All()
+                .Select(p => p.CreditRating)
+                .Distinct()
+                .OrderBy(o => o)
+                .Select(s => new SelectListItem()
+                {
+                    Text = s.Value.ToString(),
+                    Value = s.Value.ToString()
+                });
+
+            ViewBag.CreditRating = new SelectList(creditRating, "Value", "Text");
+
             return View(client.OrderByDescending(o => o.ClientId).Take(10));
         }
 
@@ -71,9 +84,22 @@ namespace MVC5Course.Controllers
         }
 
         [Route("search")]
-        public ActionResult Search(string keyword)
+        public ActionResult Search(string keyword, string CreditRating)
         {
-            var client = clientRepo.SearchKeyword(keyword);
+            var client = clientRepo.SearchKeyword(keyword, CreditRating);
+
+            var creditRating = clientRepo.All()
+                .Select(p => p.CreditRating)
+                .Distinct()
+                .OrderBy(o => o)
+                .Select(s => new SelectListItem()
+                {
+                    Text = s.Value.ToString(),
+                    Value = s.Value.ToString()
+                });
+
+            ViewBag.CreditRating = new SelectList(creditRating, "Value", "Text");
+
 
             //return View(client);
 
