@@ -97,6 +97,13 @@ namespace MVC5Course.Controllers
             return View(client);
         }
 
+        [Route("{id}/orders")]
+        public ActionResult Details_OrderList(int id)
+        {
+            ViewData.Model = clientRepo.Find(id).Order.ToList();
+            return PartialView("OrderList");
+        }
+
         // 示範 CatchAll 方式
         [Route("{*name}")]
         public ActionResult Details2(string name)
