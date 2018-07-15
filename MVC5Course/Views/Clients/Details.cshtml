@@ -163,3 +163,10 @@
     @Html.ActionLink("Back to List", "Index")
 </p>
 
+
+@*示範參數帶錯的問題*@
+@*正確*@
+@Html.ActionLink("Hello", "Index", "Home", null, new { @class = "btn" })
+
+@*錯誤 ?Length=4*@
+@Html.ActionLink("Hello", "Index", "Home", new { @class = "btn" })
