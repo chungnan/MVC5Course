@@ -14,7 +14,7 @@ namespace MVC5Course.Models
                 return base.All();
             }
 
-            return base.All().Where(p => p.CreditRating < 2 && p.Active == true);
+            return base.All().Where(p => p.Active == true);
         }
 
         public IQueryable<Client> SearchKeyword(string keyword, string CreditRating)
