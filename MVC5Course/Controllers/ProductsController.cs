@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 using Omu.ValueInjecter;
+using X.PagedList;
 
 namespace MVC5Course.Controllers
 {
@@ -16,9 +17,13 @@ namespace MVC5Course.Controllers
         ProductRepository prodRepo = RepositoryHelper.GetProductRepository();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(int? pageNo = 1)
         {
-            var data = prodRepo.TakeData(10);
+            int intPageNumber = pageNo ?? 1;
+
+            var data = prodRepo.All()
+                .OrderBy(o => o.ProductId)
+                .ToPagedList(pageNumber: intPageNumber, pageSize: 10);
 
             return View(data);
         }
